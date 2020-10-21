@@ -1,13 +1,9 @@
 require "selenium-webdriver"
-require_relative 'programs/mbu.rb'
-require_relative 'test_case.rb'
 require_relative 'api/main_center'
+require_relative 'task_handler'
 require 'pry'
 require 'awesome_print'
 
-require_relative 'capcha'
-
-include Programs::Mbu
 
 START_PAGE_URL = 'https://noqu.ru/group/kultura/kulturno-dosugovye-uchrezhdeniya/munitsipalnoe-byudzhetnoe-uchrezhdenie-gorodskogo-okruga-solnechnogorsk-tsentr-informatsionnoy-kultu/'.freeze
 
@@ -32,31 +28,23 @@ while true
     logger.error('Ошибка чтения задания: ' + e.message)
   end
 
-  if response && response[:job_status] == 'job'
-    # Выполнение задания
-    if response[:start_page_url].present?
-      driver.navigate.to response[:start_page_url]
-    end
+  # result = { job_status: :job,
+  #            job_id: 1,
+  #            test: {} }
 
-    page_number = 1
-
-    begin
-      while TestCase::new(driver, response[:test][page_number.to_s], logger).handler! do
-        page_number += 1
-      end
-    rescue StandardError => e
-      logger.error("Ошибка при выполнении скрипта на странице #{page_number}. Message: #{e.message}")
-    end
-
-    # ToDo Записать ответ о выполнении теста
-
-    # Запросить следующий тест
+  result = TaskHandler::process(driver, response, logger)
+  if result[:status] == :idle
+    # Задание не получено делаем паузу перед новым запросом
+    sleep(60)
     next
   end
-  # Задание не получено делаем паузу перед новым запросом
-  sleep(60)
+
+  # Передать результат выполнения
+  begin
+    API::MainCenter.post_job_result!(result)
+  rescue StandardError => e
+    logger.error('Ошибка чтения задания: ' + e.message)
+  end
 end
-
-
 
 driver.quit
