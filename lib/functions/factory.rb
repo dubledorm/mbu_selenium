@@ -6,6 +6,7 @@ require_relative 'send_text'
 require_relative 'sleep'
 require_relative 'connect'
 require_relative 'validate'
+require_relative 'scroll'
 
 
 
@@ -19,7 +20,8 @@ module Functions
                       'send_text' => Functions::SendText,
                       'sleep' => Functions::Sleep,
                       'connect' => Functions::Connect,
-                      'validate' => Functions::Validate
+                      'validate' => Functions::Validate,
+                      'scroll' => Functions::Scroll
     }.freeze
 
     class FunctionBuildError < StandardError; end;

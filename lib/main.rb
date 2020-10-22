@@ -39,12 +39,13 @@ while true
     next
   end
 
+  sleep(60)
   # Передать результат выполнения
-  begin
-    API::MainCenter.post_job_result!(result)
-  rescue StandardError => e
-    logger.error('Ошибка чтения задания: ' + e.message)
-  end
+  # begin
+  #   API::MainCenter.post_job_result!(result)
+  # rescue StandardError => e
+  #   logger.error('Ошибка чтения задания: ' + e.message)
+  # end
 end
 
 driver.quit
