@@ -40,6 +40,7 @@ while true
     sleep(60)
     next
   end
+
   sleep(60)
   # Передать результат выполнения
   # begin
