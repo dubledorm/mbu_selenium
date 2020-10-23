@@ -1,6 +1,7 @@
 require "selenium-webdriver"
 require_relative 'api/main_center'
 require_relative 'task_handler'
+require_relative 'programs/mbu'
 require 'pry'
 require 'awesome_print'
 
@@ -22,29 +23,30 @@ driver.manage.timeouts.page_load = 300
 
 # Цикл получения заданий
 while true
-  begin
-    response = API::MainCenter.get_job!
-  rescue StandardError => e
-    logger.error('Ошибка чтения задания: ' + e.message)
-  end
+  # begin
+  #   response = API::MainCenter.get_job!
+  # rescue StandardError => e
+  #   logger.error('Ошибка чтения задания: ' + e.message)
+  # end
 
-  # result = { job_status: :job,
-  #            job_id: 1,
-  #            test: {} }
+  response = { job_status: 'job',
+               job_id: 1,
+               test: Programs::Mbu::FKP_TEST }
 
   result = TaskHandler::process(driver, response, logger)
   if result[:status] == :idle
     # Задание не получено делаем паузу перед новым запросом
+    logger.debug('sleep')
     sleep(60)
     next
   end
-
+  sleep(60)
   # Передать результат выполнения
-  begin
-    API::MainCenter.post_job_result!(result)
-  rescue StandardError => e
-    logger.error('Ошибка чтения задания: ' + e.message)
-  end
+  # begin
+  #   API::MainCenter.post_job_result!(result)
+  # rescue StandardError => e
+  #   logger.error('Ошибка чтения задания: ' + e.message)
+  # end
 end
 
-driver.quit
+#driver.quit

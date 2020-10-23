@@ -1,5 +1,6 @@
 require_relative 'test_case.rb'
 require_relative 'test_case.rb'
+require 'pry'
 
 
 class TaskHandler
@@ -8,6 +9,7 @@ class TaskHandler
     result = { status: :idle,
                output: {}
     }
+    logger.debug('TaskHandler start')
 
     return result if response.nil?
     return result unless response[:job_status] == 'job'
@@ -17,6 +19,7 @@ class TaskHandler
 
     # Выполнение задания
     if response[:start_page_url].present?
+      logger.debug('Переход на страницу ' + response[:start_page_url])
       driver.navigate.to response[:start_page_url] # Переход на начальную страницу
     end
 

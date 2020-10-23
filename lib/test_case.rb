@@ -21,6 +21,7 @@ class TestCase
 
   def handler!
     return false unless command_hash.present?
+
     # Проверяем, что мы на нужной странице
     section_done!('check')
 

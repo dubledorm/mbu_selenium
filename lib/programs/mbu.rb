@@ -1,6 +1,61 @@
 module Programs
   module Mbu
 
+    FKP_TEST = { '1' => { 'check' => {},
+                          'do' => { '1' => { 'human_name' => 'Переход на стартовую страницу',
+                                           'do' => 'connect', 'value' => 'http://10.128.29.10/appeal/list' }
+                          },
+                          'next' => {}
+                         },
+                 '2' => { 'check' => { '1' => { 'human_name' => 'Проверка стартовой страницы и ввод пароля',
+                                              'selector' => { 'xpath' => '/html/body/section/div/h1' },
+                                              'do' => 'validate',
+                                              'attribute' => 'visible',
+                                              'value' => 'TRUE'
+                                             }
+                          },
+                          'do' => {'1' => { 'human_name' => 'Ввести пользователя',
+                                            'selector' => { 'xpath' => '//*[@id="username"]' },
+                                            'do' => 'send_text',
+                                            'value' => 'UserPkPvd'},
+                                   '2' => { 'human_name' => 'Ввести пароль',
+                                            'selector' => { 'name' => 'password' },
+                                            'do' => 'send_text',
+                                            'value' => '1234567'}},
+                          'next' => {'1' => { 'human_name' => 'Нажать Enter',
+                                              'selector' => { 'xpath' => '/html/body/section/div/form/p[3]/input' },
+                                              'do' => 'click'}
+                          }
+                 },
+                 '3' => { 'check' => {},
+                          'do' => { '1' => { 'human_name' => 'Переход на ввод обращения',
+                                             'do' => 'connect', 'value' => 'http://10.128.29.10/appeal/' },
+                                    '2' => { 'human_name' => 'Раскрыть МИВ',
+                                             'selector' => { 'xpath' => '//*[@id="appeal-receive-block8"]' },
+                                             'do' => 'click' },
+                                    '3' => { 'human_name' => 'Внесение сведений в реестр границ',
+                                             'selector' => { 'xpath' => '//*[@id="appeal-receive-miv2"]/span[1]' },
+                                             'do' => 'click' }
+                          },
+                          'next' => { '1' => { 'do' => 'sleep' }}},
+                 '4' => { 'check' => {},
+                          'do' => { '1' => { 'human_name' => 'Создать заявителя',
+                                             'selector' => { 'xpath' => '//*[@id="Applicant"]/div/span' },
+                                             'do' => 'click' },
+                                    '2' => { 'do' => 'sleep' },
+                                    '3' => { 'human_name' => 'Создать субъект',
+                                             'selector' => { 'xpath' => '//*[@id="statementApplicant_subject"]/div/div' },
+                                             'do' => 'click' },
+                                    '4' => { 'do' => 'sleep' },
+                                    '5' => { 'human_name' => 'Гражданин РФ',
+                                             'selector' => { 'xpath' => '//*[@id="btnFLCreate"]/li[2]/a/span' },
+                                             'do' => 'click' },
+                          }
+                 }
+
+    }
+
+
     COMMAND_HASH = { '1' =>
                          { selector: { xpath: '//fieldset[1]' },
                            validate: { attribute: :visible, value: 'true' },
