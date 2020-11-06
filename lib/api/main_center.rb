@@ -5,8 +5,8 @@ module API
   class MainCenter
 
     MAIN_CENTR_URL = 'http://localhost:3000'
-    I_AM_FREE_URL = 'api/i_am_free/'
-    JOB_RESULT_URL = 'api/jobs'
+    I_AM_FREE_URL = 'api/test_tasks/get_task/'
+    JOB_RESULT_URL = 'api/test_tasks'
     INSTANCE_ID = 'Это на будующее'
 
     def self.get_job!
@@ -24,7 +24,8 @@ module API
 
       response = Faraday.patch(url) do |req|
         req.headers['Content-Type'] = 'application/json'
-        req.body = result.to_json
+        req.body = {test_task: { status: result[:status] },
+                    id: result[:job_id] }.to_json
       end
       raise 'Сетевая ошибка при обращении к северу. body = ' + response.body unless response.status == 200
     end

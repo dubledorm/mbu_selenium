@@ -28,7 +28,7 @@ module Functions
 
     def self.build!(hash_attributes)
       function_name = hash_attributes['do']
-      raise Functions::Factory::FunctionBuildError, 'В переданных параметрах должен присутствовать ключ :do. Передано: ' +
+      raise Functions::Factory::FunctionBuildError, 'В переданных параметрах должен присутствовать ключ \'do\'. Передано: ' +
           hash_attributes.to_s unless function_name
 
       function_class = NAME_TO_CLASS[function_name]

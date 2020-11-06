@@ -6,13 +6,11 @@ require 'pry'
 class TaskHandler
 
   def self.process(driver, response, logger)
-    result = { status: :idle,
-               output: {}
+    result = { status: :before_start,
+               output: {},
+               error_message: ''
     }
     logger.debug('TaskHandler start')
-
-    return result if response.nil?
-    return result unless response[:job_status] == 'job'
 
     result[:status] = :started
     result[:job_id] = response[:job_id]
@@ -30,7 +28,9 @@ class TaskHandler
         test_case_number += 1
       end
     rescue StandardError => e
-      logger.error("Ошибка при выполнении test case № #{test_case_number}. Message: #{e.message}")
+      result[:error_message] = "Ошибка при выполнении test case № #{test_case_number}. Message: #{e.message}"
+      logger.error(result[:error_message])
+      return result
     end
 
     # ToDo Записать ответ о выполнении теста
