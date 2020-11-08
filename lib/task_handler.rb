@@ -10,6 +10,7 @@ class TaskHandler
                output: {},
                error_message: ''
     }
+    start = Time.now
     logger.debug('TaskHandler start')
 
     result[:status] = :started
@@ -29,6 +30,7 @@ class TaskHandler
       end
     rescue StandardError => e
       result[:error_message] = "Ошибка при выполнении test case № #{test_case_number}. Message: #{e.message}"
+      result[:duration] = Time.now - start
       logger.error(result[:error_message])
       return result
     end
@@ -36,7 +38,7 @@ class TaskHandler
     # ToDo Записать ответ о выполнении теста
 
     result[:status] = :processed
-
+    result[:duration] = Time.now - start
     result
   end
 end

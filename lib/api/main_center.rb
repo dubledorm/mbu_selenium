@@ -24,8 +24,7 @@ module API
 
       response = Faraday.patch(url) do |req|
         req.headers['Content-Type'] = 'application/json'
-        req.body = {test_task: { status: result[:status] },
-                    id: result[:job_id] }.to_json
+        req.body = result.to_json
       end
       raise 'Сетевая ошибка при обращении к северу. body = ' + response.body unless response.status == 200
     end

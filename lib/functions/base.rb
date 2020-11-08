@@ -18,6 +18,13 @@ module Functions
 
     def find_and_done!
       element = waiting_for_element! if self.selector.present?
+      # Перемещаемся на элемент
+      if element && !element.displayed?
+        element.location_once_scrolled_into_view
+        @driver.execute_script("window.scrollBy(0,50)")
+      end
+
+      # Выполняем запланированное действие
       done!(element)
       self.logger.info(done_message)
     end
