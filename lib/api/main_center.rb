@@ -19,14 +19,23 @@ module API
       JSON.parse(response.body).symbolize_keys
     end
 
-    def self.post_job_result!(result)
-      url = MAIN_CENTR_URL + '/' + JOB_RESULT_URL + '/' +result[:job_id].to_s + '/'
+    def self.post_job_result!(job_id, result_kod, output_values_hash, statistic_hash, error_hash)
+      url = MAIN_CENTR_URL + '/' + JOB_RESULT_URL + '/' + job_id.to_s + '/'
+
+      result = { test_task: { result_kod: result_kod == :processed ? :processed : :interrupted,
+                              output_values: output_values_hash,
+                              statistic: { duration: statistic_hash[:duration] },
+                              errors: { operation_id: error_hash[:operation_id],
+                                        message: error_hash[:message] }
+                            }
+               }
 
       response = Faraday.patch(url) do |req|
         req.headers['Content-Type'] = 'application/json'
         req.body = result.to_json
       end
-      raise 'Сетевая ошибка при обращении к северу. body = ' + response.body unless response.status == 200
+
+      raise "Сетевая ошибка при обращении к северу. message = #{JSON.parse(response.body)['message']}" unless response.status == 200
     end
   end
 end

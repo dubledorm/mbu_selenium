@@ -8,6 +8,7 @@ class TaskHandler
   def self.process(driver, response, logger)
     result = { status: :before_start,
                output: {},
+               failed_operation_id: nil,
                error_message: ''
     }
     start = Time.now

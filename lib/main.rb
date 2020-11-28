@@ -42,12 +42,16 @@ while true
 
   # Выполняем задание
   result = TaskHandler::process(driver, response, logger)
-
   # Передать результат выполнения
   begin
-    API::MainCenter.post_job_result!(result)
+    API::MainCenter.post_job_result!(result[:job_id],
+                                     result[:status],
+                                     result[:output],
+                                     { duration: result[:duration]},
+                                     { operation_id: result[:failed_operation_id],
+                                                  error_message: result[:error_message] })
   rescue StandardError => e
-    logger.error('Ошибка чтения задания: ' + e.message)
+    logger.error('Ошибка отправки отчёта: ' + e.message)
   end
 end
 
