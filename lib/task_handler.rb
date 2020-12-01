@@ -11,6 +11,7 @@ class TaskHandler
                failed_operation_id: nil,
                error_message: ''
     }
+    storage = {}
     start = Time.now
     logger.debug('TaskHandler start')
 
@@ -26,7 +27,7 @@ class TaskHandler
     # Проходим в цикле по всем шагам теста, до тех пор пока не закончатся или test_case не вернёт false
     test_case_number = 1
     begin
-      while TestCase::new(driver, response[:test][test_case_number.to_s], logger).handler! do
+      while TestCase::new(driver, response[:test][test_case_number.to_s], storage, result[:output], logger).handler! do
         test_case_number += 1
       end
     rescue StandardError => e
@@ -37,7 +38,6 @@ class TaskHandler
     end
 
     # ToDo Записать ответ о выполнении теста
-
     result[:status] = :processed
     result[:duration] = Time.now - start
     result

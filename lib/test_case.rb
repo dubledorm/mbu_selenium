@@ -12,10 +12,11 @@ class TestCase
 
   WAITING_ELEMENT_TIMEOUT = 10
 
-  def initialize(driver, command_hash, logger)
+  def initialize(driver, command_hash, storage, for_output_storage, logger)
     @driver = driver
     @command_hash = command_hash
-    @storage = {}
+    @storage = storage
+    @for_output_storage = for_output_storage
     @logger = logger
   end
 
@@ -32,7 +33,7 @@ class TestCase
   end
 
 
-  attr_reader :driver, :command_hash, :element, :storage, :logger
+  attr_reader :driver, :command_hash, :element, :storage, :for_output_storage, :logger
 
   private
 
@@ -47,6 +48,7 @@ class TestCase
       function = Functions::Factory.build!(value)
       function.driver = self.driver
       function.storage = self.storage
+      function.for_output_storage = self.for_output_storage
       function.logger = self.logger
       unless function.valid?
         raise TestCase::FunctionArgumentError, "Ошибка при передаче аргументов для функции #{value[:do]} на шаге #{key}"

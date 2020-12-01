@@ -7,6 +7,7 @@ require_relative 'sleep'
 require_relative 'connect'
 require_relative 'validate'
 require_relative 'scroll'
+require_relative 'write_output'
 
 
 
@@ -14,6 +15,7 @@ module Functions
   class Factory
 
     NAME_TO_CLASS = { 'click' => Functions::Click,
+                      'write_variable_to_output' => Functions::WriteOutput,
                       'byebug' => Functions::ByeBug,
                       'read_attribute' => Functions::ReadAttribute,
                       'resolve_capcha' => Functions::ResolveCapcha,
@@ -21,7 +23,7 @@ module Functions
                       'sleep' => Functions::Sleep,
                       'connect' => Functions::Connect,
                       'validate' => Functions::Validate,
-                      'scroll' => Functions::Scroll
+                      'scroll' => Functions::Scroll,
     }.freeze
 
     class FunctionBuildError < StandardError; end;

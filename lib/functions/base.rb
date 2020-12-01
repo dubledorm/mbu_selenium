@@ -11,7 +11,7 @@ module Functions
   class Base
     include ActiveModel::Model
 
-    attr_accessor :human_name, :human_description, :selector, :do, :driver, :storage, :logger
+    attr_accessor :human_name, :human_description, :selector, :do, :driver, :storage, :for_output_storage, :logger
     delegate :find_element, to: :driver
 
     validates :do, presence: true
