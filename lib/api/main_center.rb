@@ -26,7 +26,7 @@ module API
                               output_values: output_values_hash,
                               statistic: { duration: statistic_hash[:duration] },
                               errors: { operation_id: error_hash[:operation_id],
-                                        message: error_hash[:message] }
+                                        message: error_hash[:error_message] }
                             }
                }
 
