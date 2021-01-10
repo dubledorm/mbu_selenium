@@ -11,16 +11,6 @@ START_PAGE_URL = 'https://noqu.ru/group/kultura/kulturno-dosugovye-uchrezhdeniya
 
 logger = Logger.new(STDOUT)
 
-# Запускаем FireFox
-client = Selenium::WebDriver::Remote::Http::Default.new
-client.read_timeout = 300 # seconds
-client.open_timeout = 300 # seconds
-
-driver = Selenium::WebDriver.for :firefox, http_client: client
-driver.manage.timeouts.implicit_wait = Functions::FIND_ELEMENT_TIMEOUT
-driver.manage.timeouts.script_timeout = 30
-driver.manage.timeouts.page_load = 300
-
 # Цикл получения заданий
 while true
   response = {}
@@ -36,12 +26,24 @@ while true
   if response.nil? || response[:job_status] != 'job'
     # Задание не получено делаем паузу перед новым запросом
     logger.debug('sleep')
-    sleep(60)
+    sleep(10)
     next
   end
 
+  # Запускаем FireFox
+  client = Selenium::WebDriver::Remote::Http::Default.new
+  client.read_timeout = 300 # seconds
+  client.open_timeout = 300 # seconds
+
+  driver = Selenium::WebDriver.for :firefox, http_client: client
+  driver.manage.timeouts.implicit_wait = Functions::FIND_ELEMENT_TIMEOUT
+  driver.manage.timeouts.script_timeout = 30
+  driver.manage.timeouts.page_load = 300
+
   # Выполняем задание
   result = TaskHandler::process(driver, response, logger)
+
+  driver.quit
   # Передать результат выполнения
   begin
     API::MainCenter.post_job_result!(result[:job_id],
@@ -55,4 +57,4 @@ while true
   end
 end
 
-driver.quit
+

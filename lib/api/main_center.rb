@@ -4,7 +4,7 @@ require 'pry'
 module API
   class MainCenter
 
-    MAIN_CENTR_URL = 'http://localhost:3000'
+    MAIN_CENTR_URL = 'http://localhost:3000' # 'http://92.63.193.31'
     I_AM_FREE_URL = 'api/test_tasks/get_task/'
     JOB_RESULT_URL = 'api/test_tasks'
     INSTANCE_ID = 'Это на будующее'
