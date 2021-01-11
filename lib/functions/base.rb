@@ -11,10 +11,10 @@ module Functions
   class Base
     include ActiveModel::Model
 
-    attr_accessor :human_name, :human_description, :selector, :do, :driver, :storage, :for_output_storage, :logger
+    attr_accessor :human_name, :human_description, :operation_id, :selector, :do, :driver, :storage, :for_output_storage, :logger
     delegate :find_element, to: :driver
 
-    validates :do, presence: true
+    validates :do, :operation_id, presence: true
 
     def find_and_done!
       element = waiting_for_element! if self.selector.present?
@@ -43,7 +43,7 @@ module Functions
         element = find_element(**selector.symbolize_keys)
         return element
       rescue Selenium::WebDriver::Error::NoSuchElementError
-        raise Functions::ElementNotFound, "Для теста #{self.human_name} не могу найти элемент по правилу: #{selector}"
+        raise Functions::ElementNotFound, "Для теста #{self.human_name}, операция id = #{self.operation_id} не могу найти элемент по правилу: #{selector}"
       end
     end
 

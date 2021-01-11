@@ -3,6 +3,7 @@ require 'active_support'
 require 'active_support/core_ext'
 require_relative 'functions/factory'
 require_relative 'capcha'
+require_relative 'function_base_error'
 require 'pry'
 
 
@@ -45,15 +46,20 @@ class TestCase
     end
 
     steps.each do |key, value|
-      function = Functions::Factory.build!(value)
+      function = Functions::Factory.build!(value['operation_json'])
+      function.operation_id = value['operation_id']
       function.driver = self.driver
       function.storage = self.storage
       function.for_output_storage = self.for_output_storage
       function.logger = self.logger
-      unless function.valid?
-        raise TestCase::FunctionArgumentError, "Ошибка при передаче аргументов для функции #{value[:do]} на шаге #{key}"
+      begin
+        unless function.valid?
+          raise TestCase::FunctionArgumentError, "Ошибка при передаче аргументов для функции #{value[:do]} на шаге #{key}, message = #{function.errors.full_messages}"
+        end
+        function.find_and_done!
+      rescue StandardError => e
+        raise FunctionBaseError.new(function.operation_id, e.message)
       end
-      function.find_and_done!
     end
   end
 end

@@ -1,5 +1,6 @@
 require_relative 'test_case.rb'
 require_relative 'test_case.rb'
+require_relative 'function_base_error'
 require 'pry'
 
 
@@ -30,9 +31,10 @@ class TaskHandler
       while TestCase::new(driver, response[:test][test_case_number.to_s], storage, result[:output], logger).handler! do
         test_case_number += 1
       end
-    rescue StandardError => e
+    rescue FunctionBaseError => e
       result[:error_message] = "Ошибка при выполнении test case № #{test_case_number}. Message: #{e.message}"
       result[:duration] = Time.now - start
+      result[:failed_operation_id] = e.operation_id
       logger.error(result[:error_message])
       return result
     end
