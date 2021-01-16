@@ -13,7 +13,6 @@ module Functions
         raise ArgumentError,
               "Количество аргументов функции #{self.class.name} не должно превышать #{map_arguments_count}" if args.count > map_arguments_count
         hash_attributes = Hash[*args.map.with_index{ |attr, index| [ map_arguments[index], attr ] }.flatten]
-        binding.pry
         super(hash_attributes)
         self.attributes=hash_attributes # Этот вызов нужен, чтобы была возможность переопределить attributes=
       end

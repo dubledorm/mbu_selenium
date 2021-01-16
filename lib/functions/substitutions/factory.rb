@@ -1,10 +1,12 @@
 require_relative 'calculate'
+require_relative 'variable'
 require 'pry'
 
 module Functions
   module Substitutions
     class Factory
-      NAME_TO_CLASS = { 'calculate' => Functions::Substitutions::Calculate }.freeze
+      NAME_TO_CLASS = { 'calculate' => Functions::Substitutions::Calculate,
+                        'variable' => Functions::Substitutions::Variable }.freeze
 
       class FunctionBuildError < StandardError; end
 
