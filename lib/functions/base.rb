@@ -22,6 +22,7 @@ module Functions
       if element && !element.displayed?
         element.location_once_scrolled_into_view
         @driver.execute_script("window.scrollBy(0,50)")
+        #  driver.execute_script("arguments[0].scrollIntoView();", element)
       end
 
       # Выполняем запланированное действие
@@ -49,7 +50,7 @@ module Functions
 
     def done_message
       name = self.human_name.presence || self.selector.presence.to_s || self.do.to_s
-      "#{name} выполнен"
+      "#{self.operation_id}: #{name} выполнен"
     end
   end
 end

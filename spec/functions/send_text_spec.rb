@@ -18,10 +18,12 @@ RSpec.describe Functions::SendText do
   context 'truth arguments' do
     let(:send_text) { described_class.new( selector: { xpath: '//fieldset[17]/button[2]' },
                                            do: 'send_text',
-                                           value: 'dcscdscdsc' ) }
+                                           value: 'dcscdscdsc',
+                                           operation_id: 1 ) }
     let(:send_from_storage) { described_class.new( selector: { xpath: '//fieldset[17]/button[2]' },
                                                    do: 'send_text',
-                                                   value_from_storage: 'dcscdscdsc' ) }
+                                                   value_from_storage: 'dcscdscdsc',
+                                                   operation_id: 1 ) }
 
 
     it { expect(send_text).to be_valid }

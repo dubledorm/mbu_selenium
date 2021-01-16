@@ -9,6 +9,7 @@ require_relative 'validate'
 require_relative 'scroll'
 require_relative 'write_output'
 require_relative 'select_click'
+require_relative 'wait_element'
 
 
 
@@ -25,7 +26,8 @@ module Functions
                       'connect' => Functions::Connect,
                       'validate' => Functions::Validate,
                       'scroll' => Functions::Scroll,
-                      'select_click' => Functions::SelectClick
+                      'select_click' => Functions::SelectClick,
+                      'wait_element' => Functions::WaitElement
     }.freeze
 
     class FunctionBuildError < StandardError; end;

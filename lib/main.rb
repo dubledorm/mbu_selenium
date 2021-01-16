@@ -51,6 +51,7 @@ while true
                                      result[:output],
                                      { duration: result[:duration]},
                                      { operation_id: result[:failed_operation_id],
+                                                failed_screen_shot: result[:failed_screen_shot],
                                                 error_message: result[:error_message] })
   rescue StandardError => e
     logger.error('Ошибка отправки отчёта: ' + e.message)

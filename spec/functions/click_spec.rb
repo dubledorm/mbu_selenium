@@ -16,7 +16,7 @@ RSpec.describe Functions::Click do
   end
 
   context 'truth arguments' do
-    let!(:click) { described_class.new( selector: { xpath: '//fieldset[17]/button[2]' }, do: 'click' ) }
+    let!(:click) { described_class.new( selector: { xpath: '//fieldset[17]/button[2]' }, do: 'click', operation_id: 1 ) }
 
     it { expect(click).to be_valid }
   end

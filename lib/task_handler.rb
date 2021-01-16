@@ -35,6 +35,7 @@ class TaskHandler
       result[:error_message] = "Ошибка при выполнении test case № #{test_case_number}. Message: #{e.message}"
       result[:duration] = Time.now - start
       result[:failed_operation_id] = e.operation_id
+      result[:failed_screen_shot] = e.screen_shot
       logger.error(result[:error_message])
       return result
     end

@@ -1,4 +1,5 @@
 require 'faraday'
+require 'base64'
 require 'pry'
 
 module API
@@ -21,11 +22,11 @@ module API
 
     def self.post_job_result!(job_id, result_kod, output_values_hash, statistic_hash, error_hash)
       url = MAIN_CENTR_URL + '/' + JOB_RESULT_URL + '/' + job_id.to_s + '/'
-
       result = { test_task: { result_kod: result_kod == :processed ? :processed : :interrupted,
                               output_values: output_values_hash,
                               statistic: { duration: statistic_hash[:duration] },
                               errors: { operation_id: error_hash[:operation_id],
+                                        failed_screen_shot: error_hash[:failed_screen_shot].present? ? Base64.encode64(error_hash[:failed_screen_shot]) : nil,
                                         message: error_hash[:error_message] }
                             }
                }

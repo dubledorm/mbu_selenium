@@ -58,7 +58,8 @@ class TestCase
         end
         function.find_and_done!
       rescue StandardError => e
-        raise FunctionBaseError.new(function.operation_id, e.message)
+        picture = function.driver.screenshot_as(:png)
+        raise FunctionBaseError.new(function.operation_id, e.message, picture)
       end
     end
   end
