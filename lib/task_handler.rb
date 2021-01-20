@@ -6,13 +6,13 @@ require 'pry'
 
 class TaskHandler
 
-  def self.process(driver, response, logger)
+  def self.process(driver, response, logger, storage = {}, result_output = {})
     result = { status: :before_start,
-               output: {},
+               output: result_output,
                failed_operation_id: nil,
                error_message: ''
     }
-    storage = {}
+    #  storage = {}
     start = Time.now
     logger.debug('TaskHandler start')
 
@@ -26,13 +26,15 @@ class TaskHandler
     end
 
     # Проходим в цикле по всем шагам теста, до тех пор пока не закончатся или test_case не вернёт false
-    test_case_number = 1
+    test_case_numbers = response[:test].keys.select{ |key| key =~ /^[\d]+$/ }.sort
+    test_case_index = 0
     begin
-      while TestCase::new(driver, response[:test][test_case_number.to_s], storage, result[:output], logger).handler! do
-        test_case_number += 1
+      while test_case_index < test_case_numbers.length &&
+        TestCase::new(driver, response[:test][test_case_numbers[test_case_index].to_s], storage, result[:output], logger).handler! do
+        test_case_index += 1
       end
     rescue FunctionBaseError => e
-      result[:error_message] = "Ошибка при выполнении test case № #{test_case_number}. Message: #{e.message}"
+      result[:error_message] = "Ошибка при выполнении test case № #{test_case_numbers[test_case_index]}. Message: #{e.message}"
       result[:duration] = Time.now - start
       result[:failed_operation_id] = e.operation_id
       result[:failed_screen_shot] = e.screen_shot
