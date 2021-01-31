@@ -19,10 +19,11 @@ module Functions
     def find_and_done!
       element = waiting_for_element! if self.selector.present?
       # Перемещаемся на элемент
-      if element && !element.displayed?
-        element.location_once_scrolled_into_view
-        @driver.execute_script("window.scrollBy(0,50)")
-        #  driver.execute_script("arguments[0].scrollIntoView();", element)
+      if element #&& !element.displayed?
+        #element.location_once_scrolled_into_view
+        #@driver.execute_script("window.scrollBy(0,50)")
+        driver.execute_script("arguments[0].scrollIntoView();", element)
+        @driver.execute_script("window.scrollBy(0,-100);")
       end
 
       # Выполняем запланированное действие

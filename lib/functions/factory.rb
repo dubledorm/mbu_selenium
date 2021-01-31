@@ -11,6 +11,7 @@ require_relative 'write_output'
 require_relative 'select_click'
 require_relative 'wait_element'
 require_relative 'sub_script'
+require_relative 'load_file'
 
 
 
@@ -29,7 +30,8 @@ module Functions
                       'scroll' => Functions::Scroll,
                       'select_click' => Functions::SelectClick,
                       'wait_element' => Functions::WaitElement,
-                      'sub_script' => Functions::SubScript
+                      'sub_script' => Functions::SubScript,
+                      'load_file' => Functions::LoadFile
     }.freeze
 
     class FunctionBuildError < StandardError; end;
