@@ -44,17 +44,18 @@ class TestCase
       logger.info("Секция #{section_key} пуста, пропускаем")
       return
     end
+    steps.sort_by!{ |operation| operation['number']}
 
-    steps.each do |key, value|
-      function = Functions::Factory.build!(value['operation_json'])
-      function.operation_id = value['operation_id']
+    steps.each do |operation|
+      function = Functions::Factory.build!(operation['operation_json'])
+      function.operation_id = operation['id']
       function.driver = self.driver
       function.storage = self.storage
       function.for_output_storage = self.for_output_storage
       function.logger = self.logger
       begin
         unless function.valid?
-          raise TestCase::FunctionArgumentError, "Ошибка при передаче аргументов для функции #{value[:do]} на шаге #{key}, message = #{function.errors.full_messages}"
+          raise TestCase::FunctionArgumentError, "Ошибка при передаче аргументов для функции #{operation[:function_name]} на шаге #{key}, message = #{function.errors.full_messages}"
         end
         function.find_and_done!
       rescue StandardError => e

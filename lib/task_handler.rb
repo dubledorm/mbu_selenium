@@ -26,15 +26,15 @@ class TaskHandler
     end
 
     # Проходим в цикле по всем шагам теста, до тех пор пока не закончатся или test_case не вернёт false
-    test_case_numbers = response[:test].keys.select{ |key| key =~ /^[\d]+$/ }.sort
-    test_case_index = 0
+    experiment_cases = response[:test]['experiment_cases'].sort_by{|experiment_case| experiment_case['number']}
+    experiment_case_index = 0
     begin
-      while test_case_index < test_case_numbers.length &&
-        TestCase::new(driver, response[:test][test_case_numbers[test_case_index].to_s], storage, result[:output], logger).handler! do
-        test_case_index += 1
+      while experiment_case_index < experiment_cases.length &&
+        TestCase::new(driver, experiment_cases[experiment_case_index], storage, result[:output], logger).handler! do
+        experiment_case_index += 1
       end
     rescue FunctionBaseError => e
-      result[:error_message] = "Ошибка при выполнении test case № #{test_case_numbers[test_case_index]}. Message: #{e.message}"
+      result[:error_message] = "Ошибка при выполнении test case № #{experiment_cases[experiment_case_index]['number']}. Message: #{e.message}"
       result[:duration] = Time.now - start
       result[:failed_operation_id] = e.operation_id
       result[:failed_screen_shot] = e.screen_shot
