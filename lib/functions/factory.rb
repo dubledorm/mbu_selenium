@@ -12,6 +12,7 @@ require_relative 'select_click'
 require_relative 'wait_element'
 require_relative 'sub_script'
 require_relative 'load_file'
+require_relative 'alert_control'
 
 
 
@@ -31,7 +32,8 @@ module Functions
                       'select_click' => Functions::SelectClick,
                       'wait_element' => Functions::WaitElement,
                       'sub_script' => Functions::SubScript,
-                      'load_file' => Functions::LoadFile
+                      'load_file' => Functions::LoadFile,
+                      'alert_control' => Functions::AlertControl
     }.freeze
 
     class FunctionBuildError < StandardError; end;

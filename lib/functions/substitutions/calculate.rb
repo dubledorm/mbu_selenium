@@ -12,12 +12,14 @@ module Functions
           end
         when 'sum'
           record.errors.add :values, "Функция sum должна иметь минимум 2 аргумента" if record.values.count < 2
+        when 'request_number'
+          record.errors.add :values, "Функция request_number должна иметь один аргумент" unless record.values.count == 1
         end
       end
     end
 
     class Calculate < Functions::Substitutions::Base
-      OPERATION_VALUES = %w(sum percent)
+      OPERATION_VALUES = %w(sum percent request_number)
 
       attr_accessor :operation, :values
       validates :operation, inclusion: { in: OPERATION_VALUES,
@@ -68,6 +70,9 @@ module Functions
           return translated_values.inject(0){ |result, value| result = result + value.to_i }
         when 'percent'
           return (translated_values[0].to_i * 100 ) / translated_values[1].to_i
+        when 'request_number'
+          m = translated_values[0].match(/(?<number>\w+-\d{4}-\d{2}-\d{2}-\d{6})/)
+          return m.nil? ? '' : m[:number]
         end
       end
     end

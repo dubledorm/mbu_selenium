@@ -15,7 +15,7 @@ module Functions
     def done!(element)
       value = self.value_from_storage.present? ? storage[self.value_from_storage] : self.value
       element.send_keys(value)
-      if send_return.present?
+      if send_return == 'true'
         element.send_keys(:return)
       end
     end
