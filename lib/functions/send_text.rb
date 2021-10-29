@@ -5,8 +5,9 @@ module Functions
 
     VALIDATE_ERROR_MESSAGE = 'Должен быть заполнен один из атрибутов :value, :value_from_storage'.freeze
 
-    attr_accessor :value, :value_from_storage, :send_return
+    attr_accessor :value, :value_from_storage, :send_return, :symbols_per_second
     validates :selector, presence: true
+    validates :symbols_per_second, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_blank: true
 
     validates_each :value, :value_from_storage do |record, attr|
       record.errors.add(attr, VALIDATE_ERROR_MESSAGE) if record.value.nil? && record.value_from_storage.nil?
@@ -14,7 +15,14 @@ module Functions
 
     def done!(element)
       value = self.value_from_storage.present? ? storage[self.value_from_storage] : self.value
-      element.send_keys(value)
+      if self.symbols_per_second.presence && self.symbols_per_second.to_i > 0
+        value.split('').each do |smb|
+          element.send_keys(smb)
+          sleep(1.0/self.symbols_per_second.to_i)
+        end
+      else
+        element.send_keys(value)
+      end
       if send_return == 'true'
         element.send_keys(:return)
       end
