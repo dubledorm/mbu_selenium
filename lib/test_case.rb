@@ -4,8 +4,6 @@ require 'active_support/core_ext'
 require_relative 'functions/factory'
 require_relative 'capcha'
 require_relative 'function_base_error'
-require 'pry'
-
 
 class TestCase
 

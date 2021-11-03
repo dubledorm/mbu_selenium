@@ -2,7 +2,6 @@ require "selenium-webdriver"
 require_relative 'api/main_center'
 require_relative 'task_handler'
 require_relative 'programs/mbu'
-require 'pry'
 require 'awesome_print'
 
 

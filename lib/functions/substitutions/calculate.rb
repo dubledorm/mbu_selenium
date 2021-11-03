@@ -33,8 +33,8 @@ module Functions
               "Количество аргументов функции Calculate должно быть не меньше 2" if args.count < 2
 
         hash_attributes = {}
-        hash_attributes[:operation] = args[0]
-        hash_attributes[:values] = args[1..-1]
+        hash_attributes[:operation] = args[0].strip
+        hash_attributes[:values] = args[1..-1].map{ |arg| arg.strip}
         self.attributes=hash_attributes # Этот вызов нужен, чтобы была возможность переопределить attributes=
       end
 

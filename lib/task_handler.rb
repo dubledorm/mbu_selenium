@@ -1,8 +1,6 @@
 require_relative 'test_case.rb'
 require_relative 'test_case.rb'
 require_relative 'function_base_error'
-require 'pry'
-
 
 class TaskHandler
 

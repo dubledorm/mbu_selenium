@@ -8,7 +8,7 @@ gem 'rails', '~> 6.0.0.rc1'
 gem 'geckodriver-helper'
 gem 'selenium-webdriver', '~> 3.142', '>= 3.142.7'
 gem 'awesome_print'
-gem 'pry', '~> 0.13.1'
+gem 'byebug'
 gem 'faraday'
 
 group :development, :test do

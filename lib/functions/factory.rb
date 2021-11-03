@@ -13,8 +13,7 @@ require_relative 'wait_element'
 require_relative 'sub_script'
 require_relative 'load_file'
 require_relative 'alert_control'
-
-
+require_relative 'set_variable'
 
 module Functions
   class Factory
@@ -33,7 +32,8 @@ module Functions
                       'wait_element' => Functions::WaitElement,
                       'sub_script' => Functions::SubScript,
                       'load_file' => Functions::LoadFile,
-                      'alert_control' => Functions::AlertControl
+                      'alert_control' => Functions::AlertControl,
+                      'set_variable' => Functions::SetVariable
     }.freeze
 
     class FunctionBuildError < StandardError; end;

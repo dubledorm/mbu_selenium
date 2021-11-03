@@ -10,7 +10,7 @@ module Functions
     validates :file_body, :base_file_name, presence: true
 
     def done!(element)
-      local_path = Tempfile.open([base_file_name, file_extension].compact) { |f| f << Base64.strict_encode64(file_body) }.path
+      local_path = Tempfile.open([base_file_name, file_extension].compact) { |f| f << Base64.decode64(file_body) }.path
       element.send_keys(local_path)
     end
   end

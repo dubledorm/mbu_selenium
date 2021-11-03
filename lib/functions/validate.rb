@@ -1,5 +1,4 @@
 require_relative 'base.rb'
-require 'pry'
 
 module Functions
   class Validate < Base

@@ -1,6 +1,5 @@
 require 'faraday'
 require 'base64'
-require 'pry'
 
 module API
   class MainCenter

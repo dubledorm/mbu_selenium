@@ -7,7 +7,9 @@ module Functions
     validates :value, presence: true
 
     def done!(element)
-      driver.navigate.to self.value
+      driver.navigate.to Functions::FinAndReplace::call(self.value,
+                                                                       storage,
+                                                                       for_output_storage)
     end
   end
 end

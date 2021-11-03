@@ -1,12 +1,15 @@
 require_relative 'calculate'
 require_relative 'variable'
-require 'pry'
+require_relative 'xpath_table_element_in_row'
+require_relative 'find_sub_string'
 
 module Functions
   module Substitutions
     class Factory
-      NAME_TO_CLASS = { 'calculate' => Functions::Substitutions::Calculate,
-                        'variable' => Functions::Substitutions::Variable }.freeze
+      NAME_TO_CLASS = { 'find_sub_string' => Functions::Substitutions::FindSubString,
+                        'calculate' => Functions::Substitutions::Calculate,
+                        'variable' => Functions::Substitutions::Variable,
+                        'table_element_in_row' => Functions::Substitutions::XpathTableElementInRow}.freeze
 
       class FunctionBuildError < StandardError; end
 
