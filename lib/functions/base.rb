@@ -42,8 +42,8 @@ module Functions
       # Ищем элемент на странице
       begin
         selector[selector.keys[0]] = Functions::FinAndReplace::call(selector.values[0],
-                                                                           storage,
-                                                                           for_output_storage)
+                                                                    storage,
+                                                                    for_output_storage)
         element = find_element(**selector.symbolize_keys)
         return element
       rescue Selenium::WebDriver::Error::NoSuchElementError
