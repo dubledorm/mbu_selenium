@@ -10,8 +10,6 @@ module Functions
     validates :refresh_period_in_sec, numericality: { only_integer: true, greater_than: 0 }, allow_blank: true
 
     def find_and_done!
-
-
       if need_refresh == 'true'
         element = wait_with_refresh
       else

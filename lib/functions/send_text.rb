@@ -1,4 +1,5 @@
 require_relative 'base.rb'
+require_relative 'find_and_replace'
 
 module Functions
   class SendText < Base
@@ -14,14 +15,17 @@ module Functions
     end
 
     def done!(element)
-      value = self.value_from_storage.present? ? storage[self.value_from_storage] : self.value
+      value_for_send = self.value_from_storage.present? ? storage[self.value_from_storage] || for_output_storage[self.value_from_storage] : self.value
+      value_for_send = Functions::FinAndReplace::call(value_for_send,
+                                                      storage,
+                                                      for_output_storage)
       if self.symbols_per_second.presence && self.symbols_per_second.to_i > 0
-        value.split('').each do |smb|
+        value_for_send.split('').each do |smb|
           element.send_keys(smb)
           sleep(1.0/self.symbols_per_second.to_i)
         end
       else
-        element.send_keys(value)
+        element.send_keys(value_for_send)
       end
       if send_return == 'true'
         element.send_keys(:return)

@@ -56,7 +56,7 @@ RSpec.describe Functions::SetVariable do
                                                 variable_name: 'variable_name',
                                                 value: 'value',
                                                 operation_id: 1,
-                                                storage_output: true,
+                                                storage_output: 'true',
                                                 storage: storage,
                                                 for_output_storage: for_output_storage) }
 

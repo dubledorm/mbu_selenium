@@ -4,6 +4,7 @@ require 'active_support/core_ext'
 require_relative 'functions/factory'
 require_relative 'capcha'
 require_relative 'function_base_error'
+require_relative 'functions/if_exists'
 
 class TestCase
 
@@ -22,12 +23,15 @@ class TestCase
   def handler!
     return false unless command_hash.present?
 
-    # Проверяем, что мы на нужной странице
-    section_done!('check')
+    begin
+      section_done!('check')
 
-    section_done!('do')
+      section_done!('do')
 
-    section_done!('next')
+      section_done!('next')
+    rescue Functions::IfExists::InterruptStep
+      self.logger.info('Прерван шаг.')
+    end
     true
   end
 
@@ -56,6 +60,8 @@ class TestCase
           raise TestCase::FunctionArgumentError, "Ошибка при передаче аргументов для функции #{operation[:function_name]} на шаге #{key}, message = #{function.errors.full_messages}"
         end
         function.find_and_done!
+      rescue Functions::IfExists::InterruptStep => e
+        raise e
       rescue StandardError => e
         picture = function.driver.screenshot_as(:png)
         raise FunctionBaseError.new(function.operation_id, e.message, picture)

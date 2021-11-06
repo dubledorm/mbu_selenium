@@ -14,6 +14,7 @@ require_relative 'sub_script'
 require_relative 'load_file'
 require_relative 'alert_control'
 require_relative 'set_variable'
+require_relative 'if_exists'
 
 module Functions
   class Factory
@@ -33,7 +34,8 @@ module Functions
                       'sub_script' => Functions::SubScript,
                       'load_file' => Functions::LoadFile,
                       'alert_control' => Functions::AlertControl,
-                      'set_variable' => Functions::SetVariable
+                      'set_variable' => Functions::SetVariable,
+                      'if_exists' => Functions::IfExists
     }.freeze
 
     class FunctionBuildError < StandardError; end;
