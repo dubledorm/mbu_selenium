@@ -11,7 +11,11 @@ module Functions
     validates :delay, numericality: { only_integer: true, greater_than: 0 }, allow_blank: true
 
     def find_and_done!
-      element = waiting_for_element! if self.selector.present?
+      begin
+        element = waiting_for_element! if self.selector.present?
+      rescue Functions::ElementNotFound
+      end
+
       if element
         self.logger.info(done_message + ' Элемент найден.')
         return element
