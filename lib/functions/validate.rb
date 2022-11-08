@@ -40,6 +40,8 @@ module Functions
         value = element.style
       when 'tag_name'
         value = element.tag_name
+      when 'class'
+        value = element.attribute('class')
       else
         value = element.property(self.attribute)
       end

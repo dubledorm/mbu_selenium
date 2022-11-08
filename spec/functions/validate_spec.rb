@@ -36,7 +36,7 @@ RSpec.describe Functions::Validate do
 
     let(:element) { Selenium::WebDriver::Element.new(Selenium::WebDriver.for(:firefox), 1) }
 
-    context 'when succesfully' do
+    context 'when successfully' do
       before do
         allow(element).to receive(:text).and_return('проверяемое значение')
       end
