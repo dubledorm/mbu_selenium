@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "selenium-webdriver"
 require_relative 'api/main_center'
 require_relative 'task_handler'
@@ -5,16 +7,28 @@ require_relative 'programs/mbu'
 require 'awesome_print'
 
 
-START_PAGE_URL = 'https://noqu.ru/group/kultura/kulturno-dosugovye-uchrezhdeniya/munitsipalnoe-byudzhetnoe-uchrezhdenie-gorodskogo-okruga-solnechnogorsk-tsentr-informatsionnoy-kultu/'.freeze
+USE_MESSAGE = "Use: main.rb -s <server name>\n"
+SERVER_URL_KEY = '-s'
 
+if ARGV.length == 0 || ARGV.length.odd?
+  puts USE_MESSAGE
+  exit(-1)
+end
+
+configuration = Hash[*ARGV]
+if configuration[SERVER_URL_KEY].nil?
+  puts USE_MESSAGE
+  exit(-1)
+end
 
 logger = Logger.new(STDOUT)
+
 
 # Цикл получения заданий
 while true
   response = {}
   begin
-    response = API::MainCenter.get_job!
+    response = API::MainCenter.new(configuration[SERVER_URL_KEY]).get_job!
   rescue StandardError => e
     logger.error('Ошибка чтения задания: ' + e.message)
   end
@@ -45,7 +59,8 @@ while true
   driver.quit
   # Передать результат выполнения
   begin
-    API::MainCenter.post_job_result!(result[:job_id],
+    API::MainCenter.new(configuration[SERVER_URL_KEY])
+                   .post_job_result!(result[:job_id],
                                      result[:status],
                                      result[:output],
                                      { duration: result[:duration]},
