@@ -3,14 +3,27 @@ require_relative 'base.rb'
 module Functions
   class Validate < Base
 
-    attr_accessor :value, :attribute
+    STRICTLY_VALUES = { yes: 'true', no: 'false' }.freeze
+
+    attr_accessor :value, :attribute, :strictly
     validates :value, :attribute, presence: true
+    validates :strictly, inclusion: { in: STRICTLY_VALUES.values,
+                                       message: "Поле strictly может содержать значения true или false. %{value} это не корректное значение" }
+
+    def initialize(attributes = nil)
+      @strictly = STRICTLY_VALUES[:yes]
+      super
+    end
 
     # Прервать выполнение теста если условие не выполнено
     def done!(element)
       value = read(element)
 
-      return if value.to_s == self.value.to_s
+      if strictly == STRICTLY_VALUES[:yes]
+         return if value.to_s == self.value.to_s
+      end
+
+      return if value.to_s.scan(self.value.to_s).size > 0
 
       raise Functions::TestInterrupted, "Не выполнено условие на странице #{self.selector}. Ожидается условие: |#{[self.attribute, self.value].join(' == ')}| " +
         " Получено : |#{[self.attribute, value].join(' == ')}|"
