@@ -1,6 +1,6 @@
 require_relative 'test_case.rb'
-require_relative 'test_case.rb'
 require_relative 'function_base_error'
+require_relative 'services/read_variables_service'
 
 class TaskHandler
 
@@ -21,6 +21,11 @@ class TaskHandler
     if response[:start_page_url].present?
       logger.debug('Переход на страницу ' + response[:start_page_url])
       driver.navigate.to response[:start_page_url] # Переход на начальную страницу
+    end
+
+    if response[:environment_json].present?
+      # Заполняем значения переменных
+      Services::ReadVariablesService::read(response[:environment_json], storage)
     end
 
     # Проходим в цикле по всем шагам теста, до тех пор пока не закончатся или test_case не вернёт false
