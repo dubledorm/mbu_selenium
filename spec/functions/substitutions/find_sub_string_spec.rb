@@ -21,5 +21,6 @@ RSpec.describe Functions::Substitutions::FindSubString do
     it { expect(described_class.new('source_string', 'source').calculate).to eq('source') }
     it { expect(described_class.new('source_123string', '\d{3}').calculate).to eq('123') }
     it { expect(described_class.new('Заявление № MFC-0003/2021-458-1', 'MFC-\d{4}/\d{4}-\d{3}').calculate).to eq('MFC-0003/2021-458') }
+    it { expect(described_class.new('  10,0  fsafasf', '\d+,\d+').calculate).to eq('10,0') }
   end
 end

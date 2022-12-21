@@ -72,6 +72,7 @@ GEM
       archive-zip (~> 0.7)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    hash_at_path (0.1.6)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     io-like (0.3.1)
@@ -174,6 +175,7 @@ DEPENDENCIES
   byebug
   faraday
   geckodriver-helper
+  hash_at_path
   rails (~> 6.0.0.rc1)
   rspec-rails (~> 4.0.1)
   selenium-webdriver (~> 3.142, >= 3.142.7)

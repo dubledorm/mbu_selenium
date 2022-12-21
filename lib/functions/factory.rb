@@ -16,6 +16,7 @@ require_relative 'alert_control'
 require_relative 'set_variable'
 require_relative 'if_exists'
 require_relative 'switch_to_frame'
+require_relative 'http_request'
 
 module Functions
   class Factory
@@ -37,7 +38,8 @@ module Functions
                       'alert_control' => Functions::AlertControl,
                       'set_variable' => Functions::SetVariable,
                       'if_exists' => Functions::IfExists,
-                      'switch_to_frame' => Functions::SwitchToFrame
+                      'switch_to_frame' => Functions::SwitchToFrame,
+                      'http_request' => Functions::HttpRequest
     }.freeze
 
     class FunctionBuildError < StandardError; end;

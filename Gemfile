@@ -10,6 +10,7 @@ gem 'selenium-webdriver', '~> 3.142', '>= 3.142.7'
 gem 'awesome_print'
 gem 'byebug'
 gem 'faraday'
+gem 'hash_at_path'
 
 group :development, :test do
   gem 'rspec-rails', '~> 4.0.1'

@@ -2,8 +2,8 @@ require 'active_model'
 require "selenium/webdriver/common/error"
 
 module Functions
-  class ElementNotFound < StandardError; end;
-  class TestInterrupted < StandardError; end;
+  class ElementNotFound < StandardError; end
+  class TestInterrupted < StandardError; end
 
   FIND_ELEMENT_TIMEOUT = 5
 

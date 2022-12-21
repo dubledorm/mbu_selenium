@@ -42,3 +42,4 @@ yarn-debug.log*
 .ruby-gemset
 
 .env.development
+.byebug_history

@@ -9,6 +9,7 @@ module Functions
     #REG_FIND_FUNCTIONS = /(^|[^\\]|[\\]{2}+)\$(?<function>[^\s\(\)]+\(.*?\))/
     REG_SEPARATE_NAME_ARGS = /(?<prefix>(^|[^\\]|[\\]{2}+))\$(?<name>[^\s()]+)\((?<args>[^()]*)\)/
     #REG_SEPARATE_NAME_ARGS = /(?<prefix>(^|[^\\]|[\\]{2}+))\$(?<name>[^\s()]+)\((?<args>((\\\()|(\\\))|[^\(\)])*)\)/
+    REG_FOR_SPLIT_ARGS = /(?<!\\),|(?<=\\)\\,/
 
     def self.call(source_str, storage, for_output_storage)
       return unless source_str
@@ -25,15 +26,17 @@ module Functions
           raise ArgumentError, "Ошибка разбора аргументов функции #{function}" if m.nil? || m[:name].nil? || m[:args].nil?
           # вычисляем и заменяем функцию в исходной строке
           fnc_escaped_result = calculate_function(m, storage, for_output_storage).to_s
+          fnc_escaped_result&.gsub!(',','\,') # маскируем запятые, если они там есть
           "#{m[:prefix]}#{fnc_escaped_result}"
         end
       end
-      result_str
+      result_str.gsub('\,', ',')
     end
 
     def self.calculate_function(m_match, storage, for_output_storage)
+      args = m_match[:args].split(REG_FOR_SPLIT_ARGS).map { |arg| arg.strip.gsub('\,', ',') }
       # Применяем функцию
-      fnc = Functions::Substitutions::Factory.build!(m_match[:name], m_match[:args].split(',').map{ |arg| arg.strip })
+      fnc = Functions::Substitutions::Factory.build!(m_match[:name], args)
       raise ArgumentError, "Ошибка разбора аргументов функции #{m_match[:name]} с аргументами #{m_match[:args]}. Ошибка: #{fnc.errors.full_messages}" unless fnc.valid?
 
       fnc.storage = storage
