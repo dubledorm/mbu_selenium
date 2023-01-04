@@ -24,8 +24,10 @@ module Functions
     def done!(_element)
       send_request
       save_status
-      if only_response_200 && @http_response.status != 200
-        raise StandardError, "Запрос вернул статус #{@http_response.status}, а ожидалось 200"
+      if @only_response_200 == 'true' && @http_response.status != 200
+        raise StandardError, "Запрос вернул статус #{@http_response.status}, а ожидалось 200.\n" +
+          " http_response_body = #{@http_response.body&.force_encoding('UTF-8')}\n" +
+          " http_response_header = #{@http_response.headers.to_s.force_encoding('UTF-8')}"
       end
 
       save_result
@@ -38,24 +40,25 @@ module Functions
     def send_request
       case request_type
       when REQUEST_TYPE_VALUES[:get]
-        @http_response = Faraday.get(url)
+        @http_response = Faraday.get(url, {}, request_header_json.empty? ? {} : request_header_json)
       when REQUEST_TYPE_VALUES[:post]
         @http_response = Faraday.post(url) do |req|
-          req.headers['Content-Type'] = 'application/json'
-          req.headers['accept'] = 'text/plain'
-          req.body = request_body.to_json
+          unless request_header_json.empty?
+            req.headers = request_header_json
+          end
+          req.body = request_body
         end
       when REQUEST_TYPE_VALUES[:patch]
         @http_response = Faraday.patch(url) do |req|
           req.headers['Content-Type'] = 'application/json'
           req.headers['accept'] = 'text/plain'
-          req.body = subject_attributes.to_json
+          req.body = request_body
         end
       when REQUEST_TYPE_VALUES[:put]
         @http_response = Faraday.put(url) do |req|
           req.headers['Content-Type'] = 'application/json'
           req.headers['accept'] = 'text/plain'
-          req.body = subject_attributes.to_json
+          req.body = request_body
         end
       when REQUEST_TYPE_VALUES[:delete]
         @http_response = Faraday.delete(url)
