@@ -16,9 +16,6 @@ module Functions
 
     def done!(element)
       value_for_send = self.value_from_storage.present? ? storage[self.value_from_storage] || for_output_storage[self.value_from_storage] : self.value
-      value_for_send = Functions::FinAndReplace::call(value_for_send,
-                                                      storage,
-                                                      for_output_storage)
       if self.symbols_per_second.presence && self.symbols_per_second.to_i > 0
         value_for_send.split('').each do |smb|
           element.send_keys(smb)

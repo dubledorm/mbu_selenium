@@ -25,7 +25,7 @@ module Functions
       send_request
       save_status
       if @only_response_200 == 'true' && @http_response.status != 200
-        raise StandardError, "Запрос вернул статус #{@http_response.status}, а ожидалось 200.\n" +
+        raise StandardError, "Запрос #{@url} вернул статус #{@http_response.status}, а ожидалось 200.\n" +
           " http_response_body = #{@http_response.body&.force_encoding('UTF-8')}\n" +
           " http_response_header = #{@http_response.headers.to_s.force_encoding('UTF-8')}"
       end
@@ -40,7 +40,7 @@ module Functions
     def send_request
       case request_type
       when REQUEST_TYPE_VALUES[:get]
-        @http_response = Faraday.get(url, {}, request_header_json.empty? ? {} : request_header_json)
+        @http_response = Faraday.get(url, {}, request_header_json.blank? ? {} : request_header_json)
       when REQUEST_TYPE_VALUES[:post]
         @http_response = Faraday.post(url) do |req|
           unless request_header_json.empty?

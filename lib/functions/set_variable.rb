@@ -8,13 +8,10 @@ module Functions
     validates :variable_name, :value, presence: true
 
     def done!(element)
-      result = Functions::FinAndReplace::call(self.value,
-                                              storage,
-                                              for_output_storage)
       if storage_output == 'true'
-        self.for_output_storage[variable_name] = result
+        self.for_output_storage[variable_name] = value
       else
-        self.storage[variable_name] = result
+        self.storage[variable_name] = value
       end
     end
   end

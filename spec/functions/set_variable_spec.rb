@@ -64,17 +64,18 @@ RSpec.describe Functions::SetVariable do
       it {  expect(for_output_storage).to eq({ 'second_value' => '100', 'variable_name' => 'value' })}
     end
 
-    context 'when value has functions' do
-      let(:set_variable) { described_class.new( do: 'set_variable',
-                                                variable_name: 'variable_name',
-                                                value: 'Это first_value = $variable(first_value), а это second_value = $variable(second_value)',
-                                                operation_id: 1,
-                                                storage: storage,
-                                                for_output_storage: for_output_storage) }
-
-      it {  expect(storage).to eq({ 'first_value' => '20', 'variable_name' => 'Это first_value = 20, а это second_value = 100' })}
-      it {  expect(for_output_storage).to eq({ 'second_value' => '100' })}
-    end
+    # Следующий тест н6е актуален, т.к. подстановка переменных и выполнение функций вынесено в TestCase.section_done
+    # context 'when value has functions' do
+    #   let(:set_variable) { described_class.new( do: 'set_variable',
+    #                                             variable_name: 'variable_name',
+    #                                             value: 'Это first_value = $variable(first_value), а это second_value = $variable(second_value)',
+    #                                             operation_id: 1,
+    #                                             storage: storage,
+    #                                             for_output_storage: for_output_storage) }
+    #
+    #   it {  expect(storage).to eq({ 'first_value' => '20', 'variable_name' => 'Это first_value = 20, а это second_value = 100' })}
+    #   it {  expect(for_output_storage).to eq({ 'second_value' => '100' })}
+    # end
 
     # TODO Открыть тест если исправим регулярное выражение и функцию find_and_replace для использования имён переменных без функции $variable
     # context 'when value has variable' do

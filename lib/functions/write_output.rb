@@ -8,9 +8,7 @@ module Functions
     validates :variable_name, :save_as, presence: true
 
     def done!(element)
-      self.for_output_storage[save_as] = Functions::FinAndReplace::call(self.variable_name,
-                                                                                       storage,
-                                                                                       for_output_storage)
+      self.for_output_storage[save_as] = variable_name
     end
   end
 end
