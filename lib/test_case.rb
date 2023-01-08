@@ -57,7 +57,7 @@ class TestCase
       function.logger = self.logger
       begin
         unless function.valid?
-          raise TestCase::FunctionArgumentError, "Ошибка при передаче аргументов для функции #{operation[:function_name]} на шаге #{key}, message = #{function.errors.full_messages}"
+          raise TestCase::FunctionArgumentError, "Ошибка при передаче аргументов для функции #{function.do} на шаге #{operation['id']}, message = #{function.errors.full_messages}"
         end
         function.find_and_done!
       rescue Functions::IfExists::InterruptStep => e
