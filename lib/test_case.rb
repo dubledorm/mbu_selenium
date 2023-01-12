@@ -52,26 +52,14 @@ class TestCase
   end
 
   def function_init(hash_attributes, operation_id)
-    replaced_hash_attributes = replace_functions(hash_attributes)
-    function = Functions::Factory.build!(replaced_hash_attributes)
+    function = Functions::Factory.build!(hash_attributes)
     function.operation_id = operation_id
     function.driver = driver
     function.storage = storage
     function.for_output_storage = for_output_storage
     function.logger = logger
+    function.replace_attributes
     function
-  end
-
-  def replace_functions(hash_attributes)
-    replaced_hash_attributes = {}
-    hash_attributes.each do |key, value|
-      if value.is_a?(Hash)
-        replaced_hash_attributes[key] = replace_functions(value)
-      else
-        replaced_hash_attributes[key] = Functions::FinAndReplace::call(value, storage, for_output_storage)
-      end
-    end
-    replaced_hash_attributes
   end
 
   def function_process(function)

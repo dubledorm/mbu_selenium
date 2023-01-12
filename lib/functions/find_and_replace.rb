@@ -12,7 +12,10 @@ module Functions
     REG_FOR_SPLIT_ARGS = /(?<!\\),|(?<=\\)\\,/
 
     def self.call(source_str, storage, for_output_storage)
-      return unless source_str
+      return source_str unless source_str
+
+      return source_str unless source_str.is_a?(String)
+
       result_str = source_str.clone
       finish_flag = false
 

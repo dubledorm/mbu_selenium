@@ -16,5 +16,11 @@ module Functions
       raise FunctionBaseError.new(operation_id, result[:error_message], result[:failed_screen_shot]) unless result[:status] == :processed
       logger.info("Завершён вложенный тест с id = #{script_id}")
     end
+
+    protected
+
+    def attributes_for_replace_hash
+      super.except( 'script_json' )
+    end
   end
 end
